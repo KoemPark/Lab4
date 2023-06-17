@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Numbers to Words Converter</title>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+	<div class="container">
+  <h1>Enter amount:</h1>
+  <div class="form">
+    <input type="number" id="number" placeholder="Enter a number" />
+    <button id="convert-btn">Convert to words</button>
+  </div>
+  <div class="result">
+    <p id="error"></p>
+    <p id="result"></p>
+  </div>
+</div>
+
+	<script src="script.js"></script>
+</body>
+</html>
+<style>
+  
+:root {
+  --md-blue-grey-50: #eceff1;
+  --md-blue-grey-300: #90a4ae;
+  --md-blue-grey-700: #455a64;
+  --md-blue-500: #f32121;
+  --md-red-500: #f44336;
+}
+
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--md-blue-grey-50);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  max-width: 600px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  font-size: 32px;
+  color: var(--md-blue-grey-700);
+  margin-top: 0;
+  text-align: left;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+label {
+  font-size: 24px;
+  color: var(--md-blue-grey-700);
+  margin-bottom: 20px;
+}
+
+input[type="number"] {
+  font-size: 24px;
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+button {
+  background-color: var(--md-blue-500);
+  color: #fff;
+  font-size: 24px;
+  margin-right: 200px ;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #c01515;
+}
+
+#error {
+  color: var(--md-red-500);
+  font-size: 20px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+#result {
+  font-size: 24px;
+  color: var(--md-blue-grey-700);
+  margin-top: 20px;
+  text-align: center;
+}
+</style>
+<script>
+    function convertNumberToWords(number) {
+  const words = [
+    '',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+    'ten',
+    'eleven',
+    'twelve',
+    'thirteen',
+    'fourteen',
+    'fifteen',
+    'sixteen',
+    'seventeen',
+    'eighteen',
+    'nineteen',
+  ];
+  
+  const tens = [
+    '',
+    '',
+    'twenty',
+    'thirty',
+    'forty',
+    'fifty',
+    'sixty',
+    'seventy',
+    'eighty',
+    'ninety',
+  ];
+  
+  if (number === 0) {
+    return 'zero';
+  }
+  
+  if (number < 0) {
+    return 'minus ' + convertNumberToWords(Math.abs(number));
+  }
+  
+  let wordsStr = '';
+  
+  if (Math.floor(number / 1000) > 0) {
+    wordsStr += convertNumberToWords(Math.floor(number / 1000)) + ' thousand ';
+    number %= 1000;
+  }
+  
+  if (Math.floor(number / 100) > 0) {
+    wordsStr += convertNumberToWords(Math.floor(number / 100)) + ' hundred ';
+    number %= 100;
+  }
+  
+  if (number > 0) {
+    if (wordsStr !== '') {
+      wordsStr += 'and ';
+    }
+    
+    if (number < 20) {
+      wordsStr += words[number];
+    } else {
+      wordsStr += tens[Math.floor(number / 10)];
+      if ((number % 10) > 0) {
+        wordsStr += '-' + words[number % 10];
+      }
+    }
+  }
+  
+  return wordsStr;
+}
+
+
+const convertBtn = document.getElementById('convert-btn');
+
+convertBtn.addEventListener('click', () => {
+  const numberInput = document.getElementById('number');
+  const result = document.getElementById('result');
+  const error = document.getElementById('error');
+  
+
+  if (isNaN(numberInput.value) || !Number.isInteger(parseFloat(numberInput.value))) {
+    error.textContent = 'Please enter a valid integer number';
+    result.textContent = '';
+    return;
+  }
+  
+
+  const number = parseInt(numberInput.value);
+  const words = convertNumberToWords(number);
+  
+  error.textContent = '';
+  result.textContent = `${words} DOLLARS`;
+});
+</script>
